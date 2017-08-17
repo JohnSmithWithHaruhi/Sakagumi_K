@@ -11,8 +11,8 @@ import io.reactivex.Observable
 class BlogUseCase {
 
   val TYPE_OSU = 0
-  private val TYPE_NOG = 1
-  private val TYPE_KEY = 2
+  val TYPE_NOG = 1
+  val TYPE_KEY = 2
   private val mRepository = BlogRepository()
 
   fun getViewModelList(type: Int): Observable<List<ItemBlogViewModel>> {

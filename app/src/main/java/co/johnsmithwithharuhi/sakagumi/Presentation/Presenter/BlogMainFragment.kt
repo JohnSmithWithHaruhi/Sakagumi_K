@@ -17,30 +17,23 @@ class BlogMainFragment : Fragment() {
       savedInstanceState: Bundle?): View? {
 
     val mBinding = DataBindingUtil.inflate<FragmentBlogMainBinding>(inflater,
-        R.layout.fragment_blog_main,
-        container, false)
+        R.layout.fragment_blog_main, container, false)
 
     val tabLayout = mBinding.blogMainTabLayout
     val viewPager = mBinding.blogMainViewPager
 
 
     val fragmentPagerAdapter = object : FragmentPagerAdapter(fragmentManager) {
-      override fun getPageTitle(position: Int): CharSequence {
-        when (position) {
-          0 -> return "推しメン"
-          1 -> return "乃木坂"
-          2 -> return "欅坂"
-          else -> return ""
-        }
+      override fun getPageTitle(position: Int): CharSequence = when (position) {
+        0 -> "推しメン"
+        1 -> "乃木坂"
+        2 -> "欅坂"
+        else -> ""
       }
 
-      override fun getItem(position: Int): Fragment {
-        return Fragment()
-      }
+      override fun getItem(position: Int): Fragment = BlogPageFragment().newInstance(position)
 
-      override fun getCount(): Int {
-        return 3
-      }
+      override fun getCount(): Int = 3
     }
 
     viewPager.adapter = fragmentPagerAdapter
