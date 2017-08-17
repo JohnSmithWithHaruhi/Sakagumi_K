@@ -18,11 +18,8 @@ class BlogMainFragment : Fragment() {
 
     val mBinding = DataBindingUtil.inflate<FragmentBlogMainBinding>(inflater,
         R.layout.fragment_blog_main, container, false)
-
     val tabLayout = mBinding.blogMainTabLayout
     val viewPager = mBinding.blogMainViewPager
-
-
     val fragmentPagerAdapter = object : FragmentPagerAdapter(fragmentManager) {
       override fun getPageTitle(position: Int): CharSequence = when (position) {
         0 -> "推しメン"
