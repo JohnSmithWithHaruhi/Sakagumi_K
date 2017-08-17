@@ -15,49 +15,37 @@ class BlogEntity {
   private var content: String? = null
   private var time: String? = null
 
-  fun getType(): Int? {
-    return type
-  }
+  fun getType(): Int? = type
 
   fun setType(type: Int) {
     this.type = type
   }
 
-  fun getName(): String? {
-    return name
-  }
+  fun getName(): String? = name
 
   fun setName(name: String) {
     this.name = name
   }
 
-  fun getTitle(): String? {
-    return title
-  }
+  fun getTitle(): String? = title
 
   fun setTitle(title: String) {
     this.title = title
   }
 
-  fun getUrl(): String? {
-    return url
-  }
+  fun getUrl(): String? = url
 
   fun setUrl(url: String) {
     this.url = url
   }
 
-  fun getContent(): String? {
-    return content
-  }
+  fun getContent(): String? = content
 
   fun setContent(content: String) {
     this.content = content
   }
 
-  fun getTime(): String? {
-    return time
-  }
+  fun getTime(): String? = time
 
   fun setTime(time: String) {
     this.time = time

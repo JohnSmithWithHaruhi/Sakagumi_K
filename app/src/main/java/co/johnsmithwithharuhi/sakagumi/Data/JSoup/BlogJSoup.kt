@@ -7,8 +7,8 @@ import java.util.*
 
 
 class BlogJSoup {
-  val NOG_URL = "http://blog.nogizaka46.com"
-  val KEY_URL = "http://www.keyakizaka46.com"
+  private val NOG_URL = "http://blog.nogizaka46.com"
+  private val KEY_URL = "http://www.keyakizaka46.com"
 
   @Throws(IOException::class)
   fun createOsuBlogList(): List<BlogEntity> {
@@ -67,7 +67,7 @@ class BlogJSoup {
     val bodyElements = document.getElementsByClass("entrybody")
     val bottomElements = document.getElementsByClass("entrybottom")
     val blogEntities = ArrayList<BlogEntity>()
-    for (i in 0..headElements.size - 1) {
+    for (i in 0 until headElements.size) {
       val headElement = headElements[i]
       val blogEntity = BlogEntity()
       blogEntity.setType(BlogEntity.NOG_KEY)

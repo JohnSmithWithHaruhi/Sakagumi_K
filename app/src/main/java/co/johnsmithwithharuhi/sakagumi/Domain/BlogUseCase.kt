@@ -17,9 +17,9 @@ class BlogUseCase {
 
   fun getViewModelList(type: Int): Observable<List<ItemBlogViewModel>> {
     val observable: Observable<List<BlogEntity>> = when (type) {
-      TYPE_NOG -> mRepository.nogBlog
-      TYPE_KEY -> mRepository.keyBlog
-      else -> mRepository.osuBlog
+      TYPE_NOG -> mRepository.getNogBlog()
+      TYPE_KEY -> mRepository.getKeyBlog()
+      else -> mRepository.getOsuBlog()
     }
     return observable.flatMap { blogEntities ->
       Observable.fromIterable(blogEntities).map { blogEntity ->
@@ -33,9 +33,9 @@ class BlogUseCase {
   fun getNewestViewModelList(type: Int,
       newestUrl: String): Observable<List<ItemBlogViewModel>> {
     val observable: Observable<List<BlogEntity>> = when (type) {
-      TYPE_NOG -> mRepository.nogBlog
-      TYPE_KEY -> mRepository.keyBlog
-      else -> mRepository.osuBlog
+      TYPE_NOG -> mRepository.getNogBlog()
+      TYPE_KEY -> mRepository.getKeyBlog()
+      else -> mRepository.getOsuBlog()
     }
     return observable.flatMap({ blogEntities ->
       Observable.fromIterable(blogEntities).map { blogEntity ->

@@ -8,22 +8,25 @@ class BlogRepository {
 
   private val mBlogJSoup: BlogJSoup = BlogJSoup()
 
-  val osuBlog: Observable<List<BlogEntity>>
-    get() = Observable.create({ e ->
+  fun getOsuBlog(): Observable<List<BlogEntity>> {
+    return Observable.create({ e ->
       e.onNext(mBlogJSoup.createOsuBlogList())
       e.onComplete()
     })
+  }
 
-
-  val nogBlog: Observable<List<BlogEntity>>
-    get() = Observable.create({ e ->
+  fun getNogBlog(): Observable<List<BlogEntity>> {
+    return Observable.create({ e ->
       e.onNext(mBlogJSoup.createNogBlogList())
       e.onComplete()
     })
+  }
 
-  val keyBlog: Observable<List<BlogEntity>>
-    get() = Observable.create({ e ->
+  fun getKeyBlog(): Observable<List<BlogEntity>> {
+    return Observable.create({ e ->
       e.onNext(mBlogJSoup.createKeyBlogList())
       e.onComplete()
     })
+  }
+
 }
