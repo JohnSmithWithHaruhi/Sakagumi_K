@@ -9,7 +9,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,10 +87,7 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
             .subscribe({ viewModels ->
               mBlogListAdapter.initViewModelList(viewModels)
               mSwipeRefreshLayout.isRefreshing = false
-            }, { throwable ->
-              mSwipeRefreshLayout.isRefreshing = false
-              Log.d("mmm", throwable.toString())
-            }))
+            }, { mSwipeRefreshLayout.isRefreshing = false }))
   }
 
   private fun loadNewBlogList() {
