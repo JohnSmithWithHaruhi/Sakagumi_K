@@ -102,7 +102,6 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
   }
 
   private fun covertPagePositionToType(position: Int): Int = when (position) {
-    0 -> BlogUseCase().TYPE_KEY
     1 -> BlogUseCase().TYPE_NOG
     2 -> BlogUseCase().TYPE_KEY
     else -> BlogUseCase().TYPE_OSU
