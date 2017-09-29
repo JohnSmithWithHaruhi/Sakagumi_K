@@ -1,4 +1,4 @@
-package co.johnsmithwithharuhi.sakagumi.Presentation.Presenter
+package co.johnsmithwithharuhi.sakagumi.Presentation.View
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle

@@ -1,6 +1,6 @@
-package co.johnsmithwithharuhi.sakagumi.Data.Entity
+package co.johnsmithwithharuhi.sakagumi.Domain.Blog
 
-class BlogEntity {
+class Blog {
 
   companion object {
     const val OSU_KEY = 0
@@ -8,6 +8,7 @@ class BlogEntity {
     const val KEY_KEY = 2
   }
 
+  private var id: Long = 0
   private var type: Int? = null
   private var name: String? = null
   private var title: String? = null

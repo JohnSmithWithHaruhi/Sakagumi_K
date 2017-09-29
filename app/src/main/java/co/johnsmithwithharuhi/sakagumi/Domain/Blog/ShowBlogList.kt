@@ -1,14 +1,13 @@
-package co.johnsmithwithharuhi.sakagumi.Domain
+package co.johnsmithwithharuhi.sakagumi.Domain.Blog
 
 import android.text.TextUtils
-import co.johnsmithwithharuhi.sakagumi.Data.Entity.BlogEntity
 import co.johnsmithwithharuhi.sakagumi.Data.Repository.BlogRepository
-import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.Item.ItemBlogViewModel
+import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.ItemBlogViewModel
 import co.johnsmithwithharuhi.sakagumi.R
 import io.reactivex.Observable
 
 
-class BlogUseCase {
+class ShowBlogList {
 
   val TYPE_OSU = 0
   val TYPE_NOG = 1
@@ -16,7 +15,7 @@ class BlogUseCase {
   private val mRepository = BlogRepository()
 
   fun getViewModelList(type: Int): Observable<List<ItemBlogViewModel>> {
-    val observable: Observable<List<BlogEntity>> = when (type) {
+    val observable: Observable<List<Blog>> = when (type) {
       TYPE_NOG -> mRepository.getNogBlog()
       TYPE_KEY -> mRepository.getKeyBlog()
       else -> mRepository.getOsuBlog()
@@ -32,7 +31,7 @@ class BlogUseCase {
 
   fun getNewestViewModelList(type: Int,
       newestUrl: String): Observable<List<ItemBlogViewModel>> {
-    val observable: Observable<List<BlogEntity>> = when (type) {
+    val observable: Observable<List<Blog>> = when (type) {
       TYPE_NOG -> mRepository.getNogBlog()
       TYPE_KEY -> mRepository.getKeyBlog()
       else -> mRepository.getOsuBlog()
@@ -47,14 +46,14 @@ class BlogUseCase {
         .toObservable()
   }
 
-  private fun convertEntityToViewModel(blogEntity: BlogEntity): ItemBlogViewModel {
+  private fun convertEntityToViewModel(blog: Blog): ItemBlogViewModel {
     val viewModel = ItemBlogViewModel()
-    viewModel.title.set(blogEntity.getTitle())
-    viewModel.name.set(blogEntity.getName())
-    viewModel.content.set(blogEntity.getContent())
-    viewModel.url.set(blogEntity.getUrl())
-    viewModel.time.set(blogEntity.getTime())
-    viewModel.textColor = if (blogEntity.getType()!! == BlogEntity.NOG_KEY)
+    viewModel.title.set(blog.getTitle())
+    viewModel.name.set(blog.getName())
+    viewModel.content.set(blog.getContent())
+    viewModel.url.set(blog.getUrl())
+    viewModel.time.set(blog.getTime())
+    viewModel.textColor = if (blog.getType()!! == Blog.NOG_KEY)
       R.color.colorPurple700
     else
       R.color.colorLightGreen700

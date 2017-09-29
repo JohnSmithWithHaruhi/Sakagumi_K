@@ -1,4 +1,4 @@
-package co.johnsmithwithharuhi.sakagumi.Presentation.Adapter
+package co.johnsmithwithharuhi.sakagumi.Presentation.View.Adapter
 
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.Item.ItemBlogViewModel
+import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.ItemBlogViewModel
 import co.johnsmithwithharuhi.sakagumi.R
 import co.johnsmithwithharuhi.sakagumi.databinding.ItemBlogBinding
 import java.util.*

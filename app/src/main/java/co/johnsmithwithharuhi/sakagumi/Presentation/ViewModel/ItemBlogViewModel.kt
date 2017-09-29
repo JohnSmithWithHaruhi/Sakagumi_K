@@ -1,4 +1,4 @@
-package co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.Item
+package co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel
 
 import android.databinding.ObservableField
 import android.view.View

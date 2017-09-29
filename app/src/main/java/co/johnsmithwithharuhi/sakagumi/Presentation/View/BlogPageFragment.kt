@@ -1,4 +1,4 @@
-package co.johnsmithwithharuhi.sakagumi.Presentation.Presenter
+package co.johnsmithwithharuhi.sakagumi.Presentation.View
 
 import android.databinding.DataBindingUtil
 import android.net.Uri
@@ -12,10 +12,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import co.johnsmithwithharuhi.sakagumi.Domain.BlogUseCase
-import co.johnsmithwithharuhi.sakagumi.Presentation.Adapter.BlogListAdapter
+import co.johnsmithwithharuhi.sakagumi.Domain.Blog.ShowBlogList
 import co.johnsmithwithharuhi.sakagumi.Presentation.Utils.BitmapUtil
-import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.Item.ItemBlogViewModel
+import co.johnsmithwithharuhi.sakagumi.Presentation.View.Adapter.BlogListAdapter
+import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.ItemBlogViewModel
 import co.johnsmithwithharuhi.sakagumi.R
 import co.johnsmithwithharuhi.sakagumi.databinding.FragmentBlogPageBinding
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -28,7 +28,7 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
   private val PAGE_POSITION = "blog_page_position"
 
   private var mCompositeDisposable = CompositeDisposable()
-  private val mBlogUseCase = BlogUseCase()
+  private val mBlogUseCase = ShowBlogList()
   private var mType: Int = 0
 
   private lateinit var mBlogListAdapter: BlogListAdapter
@@ -102,15 +102,15 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
   }
 
   private fun covertPagePositionToType(position: Int): Int = when (position) {
-    1 -> BlogUseCase().TYPE_NOG
-    2 -> BlogUseCase().TYPE_KEY
-    else -> BlogUseCase().TYPE_OSU
+    1 -> ShowBlogList().TYPE_NOG
+    2 -> ShowBlogList().TYPE_KEY
+    else -> ShowBlogList().TYPE_OSU
   }
 
   override fun onItemClick(url: String) {
     val toolBarColor = when (mType) {
-      BlogUseCase().TYPE_NOG -> R.color.colorPurple700
-      BlogUseCase().TYPE_KEY -> R.color.colorLightGreen700
+      ShowBlogList().TYPE_NOG -> R.color.colorPurple700
+      ShowBlogList().TYPE_KEY -> R.color.colorLightGreen700
       else -> R.color.colorGrey700
     }
     CustomTabsIntent.Builder()
