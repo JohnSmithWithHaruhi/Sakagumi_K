@@ -12,12 +12,15 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import co.johnsmithwithharuhi.sakagumi.Data.Repository.BlogRepository
+import co.johnsmithwithharuhi.sakagumi.Domain.Blog.Blog
 import co.johnsmithwithharuhi.sakagumi.Domain.Blog.ShowBlogList
 import co.johnsmithwithharuhi.sakagumi.Presentation.Utils.BitmapUtil
 import co.johnsmithwithharuhi.sakagumi.Presentation.View.Adapter.BlogListAdapter
 import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.ItemBlogViewModel
 import co.johnsmithwithharuhi.sakagumi.R
 import co.johnsmithwithharuhi.sakagumi.databinding.FragmentBlogPageBinding
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -28,8 +31,8 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
   private val PAGE_POSITION = "blog_page_position"
 
   private var mCompositeDisposable = CompositeDisposable()
-  private val mBlogUseCase = ShowBlogList()
-  private var mType: Int = 0
+  private val mBlogRepository = BlogRepository()
+  private var mType: Int = Blog.OSU_KEY
 
   private lateinit var mBlogListAdapter: BlogListAdapter
   private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
@@ -81,8 +84,11 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
 
   private fun initBlogList() {
     mCompositeDisposable.add(
-        mBlogUseCase.getViewModelList(mType)
+        ShowBlogList(mBlogRepository, mType).execute()
             .subscribeOn(Schedulers.io())
+            .flatMap { blogList ->
+              Observable.fromIterable(blogList).map { blog -> convertEntityToViewModel(blog) }
+            }.toList()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ viewModels ->
               mBlogListAdapter.initViewModelList(viewModels)
@@ -92,8 +98,11 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
 
   private fun loadNewBlogList() {
     mCompositeDisposable.add(
-        mBlogUseCase.getNewestViewModelList(mType, mBlogListAdapter.getNewestUrl())
+        ShowBlogList(mBlogRepository, mType).execute()
             .subscribeOn(Schedulers.io())
+            .flatMap { blogList ->
+              Observable.fromIterable(blogList).map { blog -> convertEntityToViewModel(blog) }
+            }.toList()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ viewModels ->
               mBlogListAdapter.putViewModelList(viewModels)
@@ -102,15 +111,29 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
   }
 
   private fun covertPagePositionToType(position: Int): Int = when (position) {
-    1 -> ShowBlogList().TYPE_NOG
-    2 -> ShowBlogList().TYPE_KEY
-    else -> ShowBlogList().TYPE_OSU
+    1 -> Blog.NOG_KEY
+    2 -> Blog.KEY_KEY
+    else -> Blog.OSU_KEY
+  }
+
+  private fun convertEntityToViewModel(blog: Blog): ItemBlogViewModel {
+    val viewModel = ItemBlogViewModel()
+    viewModel.title.set(blog.title)
+    viewModel.name.set(blog.name)
+    viewModel.content.set(blog.content)
+    viewModel.url.set(blog.url)
+    viewModel.time.set(blog.time)
+    viewModel.textColor = if (blog.type!! == Blog.NOG_KEY)
+      R.color.colorPurple700
+    else
+      R.color.colorLightGreen700
+    return viewModel
   }
 
   override fun onItemClick(url: String) {
     val toolBarColor = when (mType) {
-      ShowBlogList().TYPE_NOG -> R.color.colorPurple700
-      ShowBlogList().TYPE_KEY -> R.color.colorLightGreen700
+      Blog.NOG_KEY -> R.color.colorPurple700
+      Blog.KEY_KEY -> R.color.colorLightGreen700
       else -> R.color.colorGrey700
     }
     CustomTabsIntent.Builder()

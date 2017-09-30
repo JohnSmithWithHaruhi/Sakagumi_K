@@ -12,43 +12,43 @@ class BlogJSoup {
 
   @Throws(IOException::class)
   fun createOsuBlogList(): List<Blog> {
-    val blogEntities = ArrayList<Blog>()
+    val blogList = ArrayList<Blog>()
     val document = Jsoup.connect(
-        KEY_URL + "/s/k46o/diary/member/list?ima=0000&page=0&rw=30&cd=member&ct=11")
+        KEY_URL + "/s/k46o/diary/member/list?ima=0000&page=0&rw=30&cd=member&ct=07")
         .get()
     val elements = document.getElementsByTag("article")
     for (element in elements) {
-      val blogEntity = Blog()
-      blogEntity.setType(Blog.OSU_KEY)
-      blogEntity.setName(element.getElementsByClass("name").text())
-      blogEntity.setTitle(element.getElementsByTag("a").first().text())
-      blogEntity.setUrl(KEY_URL + element.getElementsByTag("a").first().attr("href"))
-      blogEntity.setContent(element.getElementsByClass("box-article").text())
-      blogEntity.setTime(
-          element.getElementsByClass("box-bottom").first().getElementsByTag("li").first().text())
-      blogEntities.add(blogEntity)
+      val blog = Blog()
+      blog.type = Blog.OSU_KEY
+      blog.name = element.getElementsByClass("name").text()
+      blog.title = element.getElementsByTag("a").first().text()
+      blog.url = KEY_URL + element.getElementsByTag("a").first().attr("href")
+      blog.content = element.getElementsByClass("box-article").text()
+      blog.time =
+          element.getElementsByClass("box-bottom").first().getElementsByTag("li").first().text()
+      blogList.add(blog)
     }
-    return blogEntities
+    return blogList
   }
 
   @Throws(IOException::class)
   fun createKeyBlogList(): List<Blog> {
-    val blogEntities = ArrayList<Blog>()
+    val blogList = ArrayList<Blog>()
     val document = Jsoup.connect(
         KEY_URL + "/s/k46o/diary/member/list?ima=0000&page=0&rw=30&cd=member").get()
     val elements = document.getElementsByTag("article")
     for (element in elements) {
-      val blogEntity = Blog()
-      blogEntity.setType(Blog.KEY_KEY)
-      blogEntity.setName(element.getElementsByClass("name").text())
-      blogEntity.setTitle(element.getElementsByTag("a").first().text())
-      blogEntity.setUrl(KEY_URL + element.getElementsByTag("a").first().attr("href"))
-      blogEntity.setContent(element.getElementsByClass("box-article").text())
-      blogEntity.setTime(
-          element.getElementsByClass("box-bottom").first().getElementsByTag("li").first().text())
-      blogEntities.add(blogEntity)
+      val blog = Blog()
+      blog.type = Blog.KEY_KEY
+      blog.name = element.getElementsByClass("name").text()
+      blog.title = element.getElementsByTag("a").first().text()
+      blog.url = KEY_URL + element.getElementsByTag("a").first().attr("href")
+      blog.content = element.getElementsByClass("box-article").text()
+      blog.time =
+          element.getElementsByClass("box-bottom").first().getElementsByTag("li").first().text()
+      blogList.add(blog)
     }
-    return blogEntities
+    return blogList
   }
 
   @Throws(IOException::class)
@@ -66,19 +66,19 @@ class BlogJSoup {
     val headElements = document.select(".heading")
     val bodyElements = document.getElementsByClass("entrybody")
     val bottomElements = document.getElementsByClass("entrybottom")
-    val blogEntities = ArrayList<Blog>()
+    val blogList = ArrayList<Blog>()
     for (i in 0 until headElements.size) {
       val headElement = headElements[i]
-      val blogEntity = Blog()
-      blogEntity.setType(Blog.NOG_KEY)
-      blogEntity.setName(headElement.getElementsByClass("author").text())
-      blogEntity.setTitle(headElement.getElementsByTag("a").first().text())
-      blogEntity.setUrl(headElement.getElementsByTag("a").first().attr("href"))
-      blogEntity.setContent(bodyElements[i].text().replace(" ", ""))
-      blogEntity.setTime(bottomElements[i].text().split("｜")[0])
-      blogEntities.add(blogEntity)
+      val blog = Blog()
+      blog.type = Blog.NOG_KEY
+      blog.name = headElement.getElementsByClass("author").text()
+      blog.title = headElement.getElementsByTag("a").first().text()
+      blog.url = headElement.getElementsByTag("a").first().attr("href")
+      blog.content = bodyElements[i].text().replace(" ", "")
+      blog.time = bottomElements[i].text().split("｜")[0]
+      blogList.add(blog)
     }
-    return blogEntities
+    return blogList
   }
 
 }
