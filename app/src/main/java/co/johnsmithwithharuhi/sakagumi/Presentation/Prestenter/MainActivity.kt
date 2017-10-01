@@ -1,4 +1,4 @@
-package co.johnsmithwithharuhi.sakagumi.Presentation.View
+package co.johnsmithwithharuhi.sakagumi.Presentation.Prestenter
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -22,7 +22,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     supportFragmentManager.beginTransaction()
-        .add(R.id.main_content, BlogMainFragment())
+        .add(R.id.main_content,
+            BlogMainFragment())
         .commit()
 
   }

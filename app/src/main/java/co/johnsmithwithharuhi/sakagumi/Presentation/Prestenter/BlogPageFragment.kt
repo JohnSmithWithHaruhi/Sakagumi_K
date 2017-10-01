@@ -1,4 +1,4 @@
-package co.johnsmithwithharuhi.sakagumi.Presentation.View
+package co.johnsmithwithharuhi.sakagumi.Presentation.Prestenter
 
 import android.databinding.DataBindingUtil
 import android.net.Uri
@@ -15,8 +15,8 @@ import android.view.ViewGroup
 import co.johnsmithwithharuhi.sakagumi.Data.Repository.BlogRepository
 import co.johnsmithwithharuhi.sakagumi.Domain.Blog.Blog
 import co.johnsmithwithharuhi.sakagumi.Domain.Blog.ShowBlogList
+import co.johnsmithwithharuhi.sakagumi.Presentation.Adapter.BlogListAdapter
 import co.johnsmithwithharuhi.sakagumi.Presentation.Utils.BitmapUtil
-import co.johnsmithwithharuhi.sakagumi.Presentation.View.Adapter.BlogListAdapter
 import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.ItemBlogViewModel
 import co.johnsmithwithharuhi.sakagumi.R
 import co.johnsmithwithharuhi.sakagumi.databinding.FragmentBlogPageBinding
@@ -30,7 +30,7 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
 
   private val PAGE_POSITION = "blog_page_position"
 
-  private var mCompositeDisposable = CompositeDisposable()
+  private val mCompositeDisposable = CompositeDisposable()
   private val mBlogRepository = BlogRepository()
   private var mType: Int = Blog.OSU_KEY
 
