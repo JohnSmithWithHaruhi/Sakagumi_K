@@ -1,11 +1,12 @@
 package co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel
 
 import android.databinding.ObservableField
+import android.databinding.ObservableInt
 import android.view.View
 
 
 class ItemBlogViewModel {
-  var textColor: Int = 0
+  var textColor = ObservableInt()
   var title = ObservableField<String>()
   var name = ObservableField<String>()
   var time = ObservableField<String>()

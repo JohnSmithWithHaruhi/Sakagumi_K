@@ -19,7 +19,7 @@ class BlogJSoup {
     val elements = document.getElementsByTag("article")
     for (element in elements) {
       val blog = Blog()
-      blog.type = Blog.OSU_KEY
+      blog.type = Blog.KEY_KEY
       blog.name = element.getElementsByClass("name").text()
       blog.title = element.getElementsByTag("a").first().text()
       blog.url = KEY_URL + element.getElementsByTag("a").first().attr("href")

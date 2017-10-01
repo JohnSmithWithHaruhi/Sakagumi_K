@@ -123,11 +123,16 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
     viewModel.content.set(blog.content)
     viewModel.url.set(blog.url)
     viewModel.time.set(blog.time)
-    viewModel.textColor = if (blog.type!! == Blog.NOG_KEY)
-      R.color.colorPurple700
-    else
-      R.color.colorLightGreen700
+    viewModel.textColor.set(getTextColor(blog.type))
     return viewModel
+  }
+
+  private fun getTextColor(type: Int?): Int {
+    return ContextCompat.getColor(context, when (type) {
+      Blog.NOG_KEY -> R.color.colorPurple700
+      Blog.KEY_KEY -> R.color.colorLightGreen700
+      else -> R.color.colorGrey700
+    })
   }
 
   override fun onItemClick(url: String) {

@@ -2,7 +2,6 @@ package co.johnsmithwithharuhi.sakagumi.Presentation.Adapter
 
 import android.content.Context
 import android.databinding.DataBindingUtil
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -41,7 +40,6 @@ class BlogListAdapter(context: Context,
     val viewModel = mViewModelList[position]
     viewModel.setOnItemClickListener(mListener)
     binding.viewModel = viewModel
-    binding.name.setTextColor(ContextCompat.getColor(mContext, viewModel.textColor))
   }
 
   class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
