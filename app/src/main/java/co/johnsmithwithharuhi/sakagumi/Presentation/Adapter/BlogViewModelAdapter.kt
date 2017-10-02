@@ -12,11 +12,15 @@ import co.johnsmithwithharuhi.sakagumi.databinding.ItemBlogBinding
 import java.util.*
 
 class BlogListAdapter(context: Context,
-    listener: ItemBlogViewModel.OnItemClickListener) : RecyclerView.Adapter<BlogListAdapter.ViewHolder>() {
+    listener: OnItemClickedListener) : RecyclerView.Adapter<BlogListAdapter.ViewHolder>() {
 
   private val mContext = context
   private val mListener = listener
   private var mViewModelList = ArrayList<ItemBlogViewModel>()
+
+  interface OnItemClickedListener {
+    fun onItemClick(url: String)
+  }
 
   fun initViewModelList(viewModelList: List<ItemBlogViewModel>) {
     mViewModelList = ArrayList(viewModelList)
@@ -36,10 +40,10 @@ class BlogListAdapter(context: Context,
   override fun getItemCount(): Int = mViewModelList.size
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    val binding = holder.getBinding()
-    val viewModel = mViewModelList[position]
-    viewModel.setOnItemClickListener(mListener)
-    binding.viewModel = viewModel
+    holder.getBinding().viewModel = mViewModelList[position]
+    holder.itemView.setOnClickListener {
+      mListener.onItemClick(mViewModelList[position].url.get())
+    }
   }
 
   class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -25,7 +25,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 
-class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+class BlogPageFragment : Fragment(), BlogListAdapter.OnItemClickedListener, SwipeRefreshLayout.OnRefreshListener {
 
   private val BLOG_TYPE = "blog_type"
 
