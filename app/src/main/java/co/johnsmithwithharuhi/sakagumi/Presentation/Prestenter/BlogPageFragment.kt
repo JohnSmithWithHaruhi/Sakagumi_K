@@ -1,11 +1,8 @@
 package co.johnsmithwithharuhi.sakagumi.Presentation.Prestenter
 
 import android.databinding.DataBindingUtil
-import android.net.Uri
 import android.os.Bundle
-import android.support.customtabs.CustomTabsIntent
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -17,7 +14,7 @@ import co.johnsmithwithharuhi.sakagumi.Domain.Blog.Blog
 import co.johnsmithwithharuhi.sakagumi.Domain.Blog.ShowBlogList
 import co.johnsmithwithharuhi.sakagumi.Domain.Blog.ShowNewestBlogList
 import co.johnsmithwithharuhi.sakagumi.Presentation.Adapter.BlogListAdapter
-import co.johnsmithwithharuhi.sakagumi.Presentation.Utils.BitmapUtil
+import co.johnsmithwithharuhi.sakagumi.Presentation.Utils.CustomTabUtil
 import co.johnsmithwithharuhi.sakagumi.Presentation.Utils.GroupUtil
 import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.ItemBlogViewModel
 import co.johnsmithwithharuhi.sakagumi.R
@@ -130,20 +127,7 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
   }
 
   override fun onItemClick(url: String) {
-    val toolBarColor = when (mType) {
-      Blog.NOG_KEY -> R.color.colorPurple700
-      Blog.KEY_KEY -> R.color.colorLightGreen700
-      else -> R.color.colorGrey700
-    }
-    CustomTabsIntent.Builder()
-        .setShowTitle(true)
-        .setToolbarColor(ContextCompat.getColor(context, toolBarColor))
-        .enableUrlBarHiding().addDefaultShareMenuItem()
-        .setCloseButtonIcon(
-            BitmapUtil.convertBitmapFromVectorDrawable(context, R.drawable.ic_arrow_back_w))
-        .setStartAnimations(context, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-        .setExitAnimations(context, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-        .build().launchUrl(context, Uri.parse(url))
+    CustomTabUtil.launchUrl(context, mType, url)
   }
 
   override fun onRefresh() {
