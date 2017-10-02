@@ -132,7 +132,7 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
     return ContextCompat.getColor(context, when (type) {
       Blog.NOG_KEY -> R.color.colorPurple700
       Blog.KEY_KEY -> R.color.colorLightGreen700
-      else -> R.color.colorGrey700
+      else -> R.color.colorLightGreen700
     })
   }
 
