@@ -8,10 +8,10 @@ class ShowBlogList(repository: BlogRepository, type: Int) : UseCase<Observable<L
   private val mRepository = repository
   private val mType = type
 
-  override fun execute(): Observable<List<Blog>> {
-    return Observable.create({ e ->
-      e.onNext(mRepository.getBlogList(mType))
-      e.onComplete()
-    })
-  }
+  override fun execute(): Observable<List<Blog>> =
+      Observable.create({ e ->
+        e.onNext(mRepository.getBlogList(mType))
+        e.onComplete()
+      })
+
 }

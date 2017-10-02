@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import co.johnsmithwithharuhi.sakagumi.Domain.Blog.Blog
 import co.johnsmithwithharuhi.sakagumi.R
 import co.johnsmithwithharuhi.sakagumi.databinding.FragmentBlogMainBinding
 
@@ -21,14 +22,16 @@ class BlogMainFragment : Fragment() {
     val tabLayout = mBinding.blogMainTabLayout
     val viewPager = mBinding.blogMainViewPager
     val fragmentPagerAdapter = object : FragmentPagerAdapter(fragmentManager) {
-      override fun getPageTitle(position: Int): CharSequence = when (position) {
-        0 -> "推しメン"
-        1 -> "乃木坂"
-        2 -> "欅坂"
-        else -> ""
-      }
+      override fun getPageTitle(position: Int): CharSequence =
+          when (convertPagePositionToType(position)) {
+            Blog.KEY_OSU -> "推しメン"
+            Blog.KEY_NOG -> "乃木坂"
+            Blog.KEY_KEY -> "欅坂"
+            else -> ""
+          }
 
-      override fun getItem(position: Int): Fragment = BlogPageFragment().newInstance(position)
+      override fun getItem(position: Int): Fragment =
+          BlogPageFragment().newInstance(convertPagePositionToType(position))
 
       override fun getCount(): Int = 3
     }
@@ -38,6 +41,12 @@ class BlogMainFragment : Fragment() {
     tabLayout.setSelectedTabIndicatorHeight(3)
 
     return mBinding.root
+  }
+
+  private fun convertPagePositionToType(position: Int): Int = when (position) {
+    1 -> Blog.KEY_NOG
+    2 -> Blog.KEY_KEY
+    else -> Blog.KEY_OSU
   }
 
 }

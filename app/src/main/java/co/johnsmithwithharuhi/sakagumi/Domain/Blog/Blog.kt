@@ -3,8 +3,8 @@ package co.johnsmithwithharuhi.sakagumi.Domain.Blog
 class Blog {
 
   companion object {
-    const val OSU_KEY = 0
-    const val NOG_KEY = 1
+    const val KEY_OSU = 0
+    const val KEY_NOG = 1
     const val KEY_KEY = 2
   }
 

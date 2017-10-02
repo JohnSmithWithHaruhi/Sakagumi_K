@@ -27,19 +27,19 @@ import io.reactivex.schedulers.Schedulers
 
 class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-  private val PAGE_POSITION = "blog_page_position"
+  private val BLOG_TYPE = "blog_type"
 
   private val mCompositeDisposable = CompositeDisposable()
   private val mBlogRepository = BlogRepository()
-  private var mType: Int = Blog.OSU_KEY
+  private var mType: Int = Blog.KEY_OSU
 
   private lateinit var mBlogListAdapter: BlogListAdapter
   private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
 
-  fun newInstance(pagePosition: Int): BlogPageFragment {
+  fun newInstance(type: Int): BlogPageFragment {
     val fragment = BlogPageFragment()
     val args = Bundle()
-    args.putInt(PAGE_POSITION, pagePosition)
+    args.putInt(BLOG_TYPE, type)
     fragment.arguments = args
     return fragment
   }
@@ -53,7 +53,7 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
       savedInstanceState: Bundle?): View? {
     val binding = DataBindingUtil.inflate<FragmentBlogPageBinding>(inflater,
         R.layout.fragment_blog_page, container, false)
-    mType = covertPagePositionToType(arguments.getInt(PAGE_POSITION))
+    mType = arguments.getInt(BLOG_TYPE)
 
     initSwipeRefreshLayout(binding)
     initRecyclerView(binding)
@@ -107,12 +107,6 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
               mBlogListAdapter.putViewModelList(viewModels)
               mSwipeRefreshLayout.isRefreshing = false
             }, { mSwipeRefreshLayout.isRefreshing = false }))
-  }
-
-  private fun covertPagePositionToType(position: Int): Int = when (position) {
-    1 -> Blog.NOG_KEY
-    2 -> Blog.KEY_KEY
-    else -> Blog.OSU_KEY
   }
 
   private fun convertEntityToViewModel(blog: Blog): ItemBlogViewModel {

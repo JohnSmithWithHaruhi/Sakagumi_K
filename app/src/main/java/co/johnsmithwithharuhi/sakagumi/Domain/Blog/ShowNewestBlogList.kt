@@ -11,12 +11,11 @@ class ShowNewestBlogList(repository: BlogRepository, type: Int,
   private val mType = type
   private val mNewestUrl = newestUrl
 
-  override fun execute(): Observable<List<Blog>> {
-    return Observable.create({ e ->
-      e.onNext(filterOlder(mRepository.getBlogList(mType), mNewestUrl))
-      e.onComplete()
-    })
-  }
+  override fun execute(): Observable<List<Blog>> = Observable.create({ e ->
+    e.onNext(filterOlder(mRepository.getBlogList(mType), mNewestUrl))
+    e.onComplete()
+  })
+
 
   private fun filterOlder(blogList: List<Blog>,
       newestUrl: String): List<Blog> {

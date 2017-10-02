@@ -10,7 +10,7 @@ class BlogRepository : BlogRepository {
 
   override fun getBlogList(type: Int): List<Blog> {
     return when (type) {
-      Blog.NOG_KEY -> mBlogJSoup.createNogBlogList()
+      Blog.KEY_NOG -> mBlogJSoup.createNogBlogList()
       Blog.KEY_KEY -> mBlogJSoup.createKeyBlogList()
       else -> mBlogJSoup.createOsuBlogList()
     }

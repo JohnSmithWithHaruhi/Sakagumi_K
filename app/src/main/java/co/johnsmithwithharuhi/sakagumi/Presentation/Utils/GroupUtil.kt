@@ -10,7 +10,7 @@ class GroupUtil {
   companion object {
     fun getGroupColor(context: Context, type: Int?): Int {
       return ContextCompat.getColor(context, when (type) {
-        Blog.NOG_KEY -> R.color.colorPurple700
+        Blog.KEY_NOG -> R.color.colorPurple700
         Blog.KEY_KEY -> R.color.colorLightGreen700
         else -> R.color.colorLightGreen700
       })
