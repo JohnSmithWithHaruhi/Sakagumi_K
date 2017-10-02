@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import co.johnsmithwithharuhi.sakagumi.Data.Repository.BlogRepository
 import co.johnsmithwithharuhi.sakagumi.Domain.Blog.Blog
 import co.johnsmithwithharuhi.sakagumi.Domain.Blog.ShowBlogList
+import co.johnsmithwithharuhi.sakagumi.Domain.Blog.ShowNewestBlogList
 import co.johnsmithwithharuhi.sakagumi.Presentation.Adapter.BlogListAdapter
 import co.johnsmithwithharuhi.sakagumi.Presentation.Utils.BitmapUtil
 import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.ItemBlogViewModel
@@ -98,7 +99,7 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
 
   private fun loadNewBlogList() {
     mCompositeDisposable.add(
-        ShowBlogList(mBlogRepository, mType).execute()
+        ShowNewestBlogList(mBlogRepository, mType, mBlogListAdapter.getNewestUrl()).execute()
             .subscribeOn(Schedulers.io())
             .flatMap { blogList ->
               Observable.fromIterable(blogList).map { blog -> convertEntityToViewModel(blog) }

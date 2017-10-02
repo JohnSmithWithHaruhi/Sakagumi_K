@@ -14,11 +14,4 @@ class ShowBlogList(repository: BlogRepository, type: Int) : UseCase<Observable<L
       e.onComplete()
     })
   }
-
-  private fun filterOlder(blogList: List<Blog>,
-      newestId: Long): List<Blog> {
-    val tempList = ArrayList<Blog>()
-    tempList += blogList.takeWhile { it.id != newestId }
-    return tempList
-  }
 }
