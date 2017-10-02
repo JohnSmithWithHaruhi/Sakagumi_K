@@ -18,6 +18,7 @@ import co.johnsmithwithharuhi.sakagumi.Domain.Blog.ShowBlogList
 import co.johnsmithwithharuhi.sakagumi.Domain.Blog.ShowNewestBlogList
 import co.johnsmithwithharuhi.sakagumi.Presentation.Adapter.BlogListAdapter
 import co.johnsmithwithharuhi.sakagumi.Presentation.Utils.BitmapUtil
+import co.johnsmithwithharuhi.sakagumi.Presentation.Utils.GroupUtil
 import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.ItemBlogViewModel
 import co.johnsmithwithharuhi.sakagumi.R
 import co.johnsmithwithharuhi.sakagumi.databinding.FragmentBlogPageBinding
@@ -124,16 +125,8 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
     viewModel.content.set(blog.content)
     viewModel.url.set(blog.url)
     viewModel.time.set(blog.time)
-    viewModel.textColor.set(getTextColor(blog.type))
+    viewModel.textColor.set((GroupUtil.getGroupColor(context, blog.type)))
     return viewModel
-  }
-
-  private fun getTextColor(type: Int?): Int {
-    return ContextCompat.getColor(context, when (type) {
-      Blog.NOG_KEY -> R.color.colorPurple700
-      Blog.KEY_KEY -> R.color.colorLightGreen700
-      else -> R.color.colorLightGreen700
-    })
   }
 
   override fun onItemClick(url: String) {
@@ -147,7 +140,7 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
         .setToolbarColor(ContextCompat.getColor(context, toolBarColor))
         .enableUrlBarHiding().addDefaultShareMenuItem()
         .setCloseButtonIcon(
-            BitmapUtil().convertBitmapFromVectorDrawable(context, R.drawable.ic_arrow_back_w))
+            BitmapUtil.convertBitmapFromVectorDrawable(context, R.drawable.ic_arrow_back_w))
         .setStartAnimations(context, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         .setExitAnimations(context, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
         .build().launchUrl(context, Uri.parse(url))
