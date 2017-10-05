@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 
 android {
   compileSdkVersion 26
-  buildToolsVersion "25.0.3"
+  buildToolsVersion '26.0.2'
   defaultConfig {
     applicationId "co.johnsmithwithharuhi.sakagumi"
     minSdkVersion 19
@@ -29,7 +29,7 @@ kapt {
 }
 
 ext {
-  support_library_version = '26.0.1'
+  support_library_version = '26.1.0'
 }
 
 dependencies {
