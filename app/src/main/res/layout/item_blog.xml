@@ -5,7 +5,7 @@
 
     <variable
         name="viewModel"
-        type="co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.Item.ItemBlogViewModel"
+        type="co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.ItemBlogViewModel"
         />
   </data>
 
@@ -15,7 +15,6 @@
       android:layout_height="wrap_content"
       android:foreground="?android:attr/selectableItemBackground"
       android:minHeight="@dimen/list_item_tile_height"
-      android:onClick="@{viewModel::onItemClick}"
       android:paddingBottom="@dimen/list_item_padding_bottom"
       android:paddingEnd="@dimen/list_item_padding_right"
       android:paddingStart="@dimen/list_item_padding_left"
@@ -27,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@{viewModel.name}"
+        android:textColor="@{viewModel.textColor}"
         android:textSize="@dimen/primary_text"
         />
 

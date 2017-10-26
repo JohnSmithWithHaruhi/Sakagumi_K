@@ -1,43 +1,45 @@
-package co.johnsmithwithharuhi.sakagumi.Presentation.Presenter
+package co.johnsmithwithharuhi.sakagumi.Presentation.Prestenter
 
 import android.databinding.DataBindingUtil
-import android.net.Uri
 import android.os.Bundle
-import android.support.customtabs.CustomTabsIntent
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import co.johnsmithwithharuhi.sakagumi.Domain.BlogUseCase
+import co.johnsmithwithharuhi.sakagumi.Data.Repository.BlogRepository
+import co.johnsmithwithharuhi.sakagumi.Domain.Blog.Blog
+import co.johnsmithwithharuhi.sakagumi.Domain.Blog.ShowBlogList
+import co.johnsmithwithharuhi.sakagumi.Domain.Blog.ShowNewestBlogList
 import co.johnsmithwithharuhi.sakagumi.Presentation.Adapter.BlogListAdapter
-import co.johnsmithwithharuhi.sakagumi.Presentation.Utils.BitmapUtil
-import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.Item.ItemBlogViewModel
+import co.johnsmithwithharuhi.sakagumi.Presentation.Utils.CustomTabUtil
+import co.johnsmithwithharuhi.sakagumi.Presentation.Utils.GroupUtil
+import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.ItemBlogViewModel
 import co.johnsmithwithharuhi.sakagumi.R
 import co.johnsmithwithharuhi.sakagumi.databinding.FragmentBlogPageBinding
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 
-class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+class BlogPageFragment : Fragment(), BlogListAdapter.OnItemClickedListener, SwipeRefreshLayout.OnRefreshListener {
 
-  private val PAGE_POSITION = "blog_page_position"
+  private val BLOG_TYPE = "blog_type"
 
-  private var mCompositeDisposable = CompositeDisposable()
-  private val mBlogUseCase = BlogUseCase()
-  private var mType: Int = 0
+  private val mCompositeDisposable = CompositeDisposable()
+  private val mBlogRepository = BlogRepository()
+  private var mType: Int = Blog.KEY_OSU
 
   private lateinit var mBlogListAdapter: BlogListAdapter
   private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
 
-  fun newInstance(pagePosition: Int): BlogPageFragment {
+  fun newInstance(type: Int): BlogPageFragment {
     val fragment = BlogPageFragment()
     val args = Bundle()
-    args.putInt(PAGE_POSITION, pagePosition)
+    args.putInt(BLOG_TYPE, type)
     fragment.arguments = args
     return fragment
   }
@@ -51,7 +53,7 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
       savedInstanceState: Bundle?): View? {
     val binding = DataBindingUtil.inflate<FragmentBlogPageBinding>(inflater,
         R.layout.fragment_blog_page, container, false)
-    mType = covertPagePositionToType(arguments.getInt(PAGE_POSITION))
+    mType = arguments.getInt(BLOG_TYPE)
 
     initSwipeRefreshLayout(binding)
     initRecyclerView(binding)
@@ -81,8 +83,11 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
 
   private fun initBlogList() {
     mCompositeDisposable.add(
-        mBlogUseCase.getViewModelList(mType)
+        ShowBlogList(mBlogRepository, mType).execute()
             .subscribeOn(Schedulers.io())
+            .flatMap { blogList ->
+              Observable.fromIterable(blogList).map { blog -> convertEntityToViewModel(blog) }
+            }.toList()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ viewModels ->
               mBlogListAdapter.initViewModelList(viewModels)
@@ -92,8 +97,11 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
 
   private fun loadNewBlogList() {
     mCompositeDisposable.add(
-        mBlogUseCase.getNewestViewModelList(mType, mBlogListAdapter.getNewestUrl())
+        ShowNewestBlogList(mBlogRepository, mType, mBlogListAdapter.getNewestUrl()).execute()
             .subscribeOn(Schedulers.io())
+            .flatMap { blogList ->
+              Observable.fromIterable(blogList).map { blog -> convertEntityToViewModel(blog) }
+            }.toList()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ viewModels ->
               mBlogListAdapter.putViewModelList(viewModels)
@@ -101,27 +109,19 @@ class BlogPageFragment : Fragment(), ItemBlogViewModel.OnItemClickListener, Swip
             }, { mSwipeRefreshLayout.isRefreshing = false }))
   }
 
-  private fun covertPagePositionToType(position: Int): Int = when (position) {
-    1 -> BlogUseCase().TYPE_NOG
-    2 -> BlogUseCase().TYPE_KEY
-    else -> BlogUseCase().TYPE_OSU
+  private fun convertEntityToViewModel(blog: Blog): ItemBlogViewModel {
+    val viewModel = ItemBlogViewModel()
+    viewModel.title.set(blog.title)
+    viewModel.name.set(blog.name)
+    viewModel.content.set(blog.content)
+    viewModel.url.set(blog.url)
+    viewModel.time.set(blog.time)
+    viewModel.textColor.set((GroupUtil.getGroupColor(context, blog.type)))
+    return viewModel
   }
 
   override fun onItemClick(url: String) {
-    val toolBarColor = when (mType) {
-      BlogUseCase().TYPE_NOG -> R.color.colorPurple700
-      BlogUseCase().TYPE_KEY -> R.color.colorLightGreen700
-      else -> R.color.colorGrey700
-    }
-    CustomTabsIntent.Builder()
-        .setShowTitle(true)
-        .setToolbarColor(ContextCompat.getColor(context, toolBarColor))
-        .enableUrlBarHiding().addDefaultShareMenuItem()
-        .setCloseButtonIcon(
-            BitmapUtil().convertBitmapFromVectorDrawable(context, R.drawable.ic_arrow_back_w))
-        .setStartAnimations(context, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-        .setExitAnimations(context, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-        .build().launchUrl(context, Uri.parse(url))
+    CustomTabUtil.launchUrl(context, mType, url)
   }
 
   override fun onRefresh() {
