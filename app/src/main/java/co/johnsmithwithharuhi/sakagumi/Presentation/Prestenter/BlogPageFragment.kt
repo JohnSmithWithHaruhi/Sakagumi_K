@@ -24,8 +24,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-
-class BlogPageFragment : Fragment(), BlogListAdapter.OnItemClickedListener, SwipeRefreshLayout.OnRefreshListener {
+class BlogPageFragment : Fragment(),
+    BlogListAdapter.OnItemClickedListener,
+    SwipeRefreshLayout.OnRefreshListener {
 
   private val BLOG_TYPE = "blog_type"
 
@@ -49,10 +50,15 @@ class BlogPageFragment : Fragment(), BlogListAdapter.OnItemClickedListener, Swip
     mBlogListAdapter = BlogListAdapter(context, this)
   }
 
-  override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-      savedInstanceState: Bundle?): View? {
-    val binding = DataBindingUtil.inflate<FragmentBlogPageBinding>(inflater,
-        R.layout.fragment_blog_page, container, false)
+  override fun onCreateView(
+    inflater: LayoutInflater?,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
+    val binding = DataBindingUtil.inflate<FragmentBlogPageBinding>(
+        inflater,
+        R.layout.fragment_blog_page, container, false
+    )
     mType = arguments.getInt(BLOG_TYPE)
 
     initSwipeRefreshLayout(binding)
@@ -68,8 +74,10 @@ class BlogPageFragment : Fragment(), BlogListAdapter.OnItemClickedListener, Swip
 
   private fun initSwipeRefreshLayout(binding: FragmentBlogPageBinding) {
     mSwipeRefreshLayout = binding.blogSwipeRefreshLayout
-    mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_purple,
-        R.color.colorLightGreen500)
+    mSwipeRefreshLayout.setColorSchemeResources(
+        android.R.color.holo_purple,
+        R.color.colorLightGreen500
+    )
     mSwipeRefreshLayout.setOnRefreshListener(this)
   }
 
@@ -86,13 +94,15 @@ class BlogPageFragment : Fragment(), BlogListAdapter.OnItemClickedListener, Swip
         ShowBlogList(mBlogRepository, mType).execute()
             .subscribeOn(Schedulers.io())
             .flatMap { blogList ->
-              Observable.fromIterable(blogList).map { blog -> convertEntityToViewModel(blog) }
+              Observable.fromIterable(blogList)
+                  .map { blog -> convertEntityToViewModel(blog) }
             }.toList()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ viewModels ->
               mBlogListAdapter.initViewModelList(viewModels)
               mSwipeRefreshLayout.isRefreshing = false
-            }, { mSwipeRefreshLayout.isRefreshing = false }))
+            }, { mSwipeRefreshLayout.isRefreshing = false })
+    )
   }
 
   private fun loadNewBlogList() {
@@ -100,13 +110,15 @@ class BlogPageFragment : Fragment(), BlogListAdapter.OnItemClickedListener, Swip
         ShowNewestBlogList(mBlogRepository, mType, mBlogListAdapter.getNewestUrl()).execute()
             .subscribeOn(Schedulers.io())
             .flatMap { blogList ->
-              Observable.fromIterable(blogList).map { blog -> convertEntityToViewModel(blog) }
+              Observable.fromIterable(blogList)
+                  .map { blog -> convertEntityToViewModel(blog) }
             }.toList()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ viewModels ->
               mBlogListAdapter.putViewModelList(viewModels)
               mSwipeRefreshLayout.isRefreshing = false
-            }, { mSwipeRefreshLayout.isRefreshing = false }))
+            }, { mSwipeRefreshLayout.isRefreshing = false })
+    )
   }
 
   private fun convertEntityToViewModel(blog: Blog): ItemBlogViewModel {

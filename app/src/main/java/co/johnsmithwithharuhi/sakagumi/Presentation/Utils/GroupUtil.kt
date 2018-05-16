@@ -8,12 +8,17 @@ import co.johnsmithwithharuhi.sakagumi.R
 class GroupUtil {
 
   companion object {
-    fun getGroupColor(context: Context, type: Int?): Int {
-      return ContextCompat.getColor(context, when (type) {
+    fun getGroupColor(
+      context: Context,
+      type: Int?
+    ): Int {
+      return ContextCompat.getColor(
+          context, when (type) {
         Blog.KEY_NOG -> R.color.colorPurple700
         Blog.KEY_KEY -> R.color.colorLightGreen700
         else -> R.color.colorLightGreen700
-      })
+      }
+      )
     }
   }
 

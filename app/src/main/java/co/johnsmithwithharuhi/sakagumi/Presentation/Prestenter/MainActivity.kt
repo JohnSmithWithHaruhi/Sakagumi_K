@@ -22,8 +22,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     supportFragmentManager.beginTransaction()
-        .add(R.id.main_content,
-            BlogMainFragment())
+        .add(
+            R.id.main_content,
+            BlogMainFragment()
+        )
         .commit()
 
   }

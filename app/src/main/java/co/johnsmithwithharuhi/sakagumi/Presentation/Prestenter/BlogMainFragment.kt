@@ -11,27 +11,31 @@ import co.johnsmithwithharuhi.sakagumi.Domain.Blog.Blog
 import co.johnsmithwithharuhi.sakagumi.R
 import co.johnsmithwithharuhi.sakagumi.databinding.FragmentBlogMainBinding
 
-
 class BlogMainFragment : Fragment() {
 
-  override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-      savedInstanceState: Bundle?): View? {
+  override fun onCreateView(
+    inflater: LayoutInflater?,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
 
-    val mBinding = DataBindingUtil.inflate<FragmentBlogMainBinding>(inflater,
-        R.layout.fragment_blog_main, container, false)
+    val mBinding = DataBindingUtil.inflate<FragmentBlogMainBinding>(
+        inflater,
+        R.layout.fragment_blog_main, container, false
+    )
     val tabLayout = mBinding.blogMainTabLayout
     val viewPager = mBinding.blogMainViewPager
     val fragmentPagerAdapter = object : FragmentPagerAdapter(fragmentManager) {
       override fun getPageTitle(position: Int): CharSequence =
-          when (convertPagePositionToType(position)) {
-            Blog.KEY_OSU -> "推しメン"
-            Blog.KEY_NOG -> "乃木坂"
-            Blog.KEY_KEY -> "欅坂"
-            else -> ""
-          }
+        when (convertPagePositionToType(position)) {
+          Blog.KEY_OSU -> "推しメン"
+          Blog.KEY_NOG -> "乃木坂"
+          Blog.KEY_KEY -> "欅坂"
+          else -> ""
+        }
 
       override fun getItem(position: Int): Fragment =
-          BlogPageFragment().newInstance(convertPagePositionToType(position))
+        BlogPageFragment().newInstance(convertPagePositionToType(position))
 
       override fun getCount(): Int = 3
     }

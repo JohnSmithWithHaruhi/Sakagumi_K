@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.ItemBlogViewModel
 import co.johnsmithwithharuhi.sakagumi.R
 import co.johnsmithwithharuhi.sakagumi.databinding.ItemBlogBinding
-import java.util.*
+import java.util.ArrayList
 
-class BlogListAdapter(context: Context,
-    listener: OnItemClickedListener) : RecyclerView.Adapter<BlogListAdapter.ViewHolder>() {
+class BlogListAdapter(
+  context: Context,
+  listener: OnItemClickedListener
+) : RecyclerView.Adapter<BlogListAdapter.ViewHolder>() {
 
   private val mContext = context
   private val mListener = listener
@@ -34,13 +36,21 @@ class BlogListAdapter(context: Context,
 
   fun getNewestUrl(): String = mViewModelList[0].url.get()
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
-      LayoutInflater.from(parent.context).inflate(R.layout.item_blog, parent, false))
+  override fun onCreateViewHolder(
+    parent: ViewGroup,
+    viewType: Int
+  ): ViewHolder = ViewHolder(
+      LayoutInflater.from(parent.context).inflate(R.layout.item_blog, parent, false)
+  )
 
   override fun getItemCount(): Int = mViewModelList.size
 
-  override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    holder.getBinding().viewModel = mViewModelList[position]
+  override fun onBindViewHolder(
+    holder: ViewHolder,
+    position: Int
+  ) {
+    holder.getBinding()
+        .viewModel = mViewModelList[position]
     holder.itemView.setOnClickListener {
       mListener.onItemClick(mViewModelList[position].url.get())
     }
