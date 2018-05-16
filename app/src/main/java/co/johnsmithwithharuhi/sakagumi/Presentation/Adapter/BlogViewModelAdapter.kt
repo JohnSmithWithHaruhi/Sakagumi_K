@@ -34,7 +34,7 @@ class BlogListAdapter(
     notifyItemRangeInserted(0, viewModelList.size)
   }
 
-  fun getNewestUrl(): String = mViewModelList[0].url.get()
+  fun getNewestUrl(): String = mViewModelList[0].url.get() ?: ""
 
   override fun onCreateViewHolder(
     parent: ViewGroup,
@@ -52,13 +52,13 @@ class BlogListAdapter(
     holder.getBinding()
         .viewModel = mViewModelList[position]
     holder.itemView.setOnClickListener {
-      mListener.onItemClick(mViewModelList[position].url.get())
+      mListener.onItemClick(mViewModelList[position].url.get() ?: "")
     }
   }
 
   class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var mBinding = DataBindingUtil.bind<ItemBlogBinding>(itemView)
-    fun getBinding(): ItemBlogBinding = mBinding
+    fun getBinding(): ItemBlogBinding = mBinding!!
   }
 
 }

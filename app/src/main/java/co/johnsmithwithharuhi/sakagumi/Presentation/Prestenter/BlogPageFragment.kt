@@ -56,7 +56,7 @@ class BlogPageFragment : Fragment(),
     savedInstanceState: Bundle?
   ): View? {
     val binding = DataBindingUtil.inflate<FragmentBlogPageBinding>(
-        inflater,
+        inflater!!,
         R.layout.fragment_blog_page, container, false
     )
     mType = arguments.getInt(BLOG_TYPE)

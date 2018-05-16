@@ -20,7 +20,7 @@ class BlogMainFragment : Fragment() {
   ): View? {
 
     val mBinding = DataBindingUtil.inflate<FragmentBlogMainBinding>(
-        inflater,
+        inflater!!,
         R.layout.fragment_blog_main, container, false
     )
     val tabLayout = mBinding.blogMainTabLayout
