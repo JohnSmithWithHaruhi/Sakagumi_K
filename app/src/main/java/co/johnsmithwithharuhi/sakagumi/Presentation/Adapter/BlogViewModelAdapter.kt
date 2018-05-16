@@ -16,7 +16,6 @@ class BlogListAdapter(
   listener: OnItemClickedListener
 ) : RecyclerView.Adapter<BlogListAdapter.ViewHolder>() {
 
-  private val mContext = context
   private val mListener = listener
   private var mViewModelList = ArrayList<ItemBlogViewModel>()
 

@@ -37,12 +37,8 @@ class BlogPageFragment : Fragment(),
   private lateinit var mBlogListAdapter: BlogListAdapter
   private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
 
-  fun newInstance(type: Int): BlogPageFragment {
-    val fragment = BlogPageFragment()
-    val args = Bundle()
-    args.putInt(BLOG_TYPE, type)
-    fragment.arguments = args
-    return fragment
+  fun newInstance(type: Int): BlogPageFragment = BlogPageFragment().apply {
+    this.arguments = Bundle().also { bundle -> bundle.putInt(BLOG_TYPE, type) }
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -121,16 +117,15 @@ class BlogPageFragment : Fragment(),
     )
   }
 
-  private fun convertEntityToViewModel(blog: Blog): ItemBlogViewModel {
-    val viewModel = ItemBlogViewModel()
-    viewModel.title.set(blog.title)
-    viewModel.name.set(blog.name)
-    viewModel.content.set(blog.content)
-    viewModel.url.set(blog.url)
-    viewModel.time.set(blog.time)
-    viewModel.textColor.set((GroupUtil.getGroupColor(context, blog.type)))
-    return viewModel
-  }
+  private fun convertEntityToViewModel(blog: Blog): ItemBlogViewModel =
+    ItemBlogViewModel().apply {
+      title.set(blog.title)
+      name.set(blog.name)
+      content.set(blog.content)
+      url.set(blog.url)
+      time.set(blog.time)
+      textColor.set((GroupUtil.getGroupColor(context, blog.type)))
+    }
 
   override fun onItemClick(url: String) {
     CustomTabUtil.launchUrl(context, mType, url)

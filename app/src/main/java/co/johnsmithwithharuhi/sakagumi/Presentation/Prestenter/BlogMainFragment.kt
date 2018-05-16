@@ -3,6 +3,7 @@ package co.johnsmithwithharuhi.sakagumi.Presentation.Prestenter
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.view.LayoutInflater
 import android.view.View
@@ -25,20 +26,7 @@ class BlogMainFragment : Fragment() {
     )
     val tabLayout = mBinding.blogMainTabLayout
     val viewPager = mBinding.blogMainViewPager
-    val fragmentPagerAdapter = object : FragmentPagerAdapter(fragmentManager) {
-      override fun getPageTitle(position: Int): CharSequence =
-        when (convertPagePositionToType(position)) {
-          Blog.KEY_OSU -> "推しメン"
-          Blog.KEY_NOG -> "乃木坂"
-          Blog.KEY_KEY -> "欅坂"
-          else -> ""
-        }
-
-      override fun getItem(position: Int): Fragment =
-        BlogPageFragment().newInstance(convertPagePositionToType(position))
-
-      override fun getCount(): Int = 3
-    }
+    val fragmentPagerAdapter = createFragmentPagerAdapter(fragmentManager)
 
     viewPager.adapter = fragmentPagerAdapter
     tabLayout.setupWithViewPager(viewPager)
@@ -52,5 +40,21 @@ class BlogMainFragment : Fragment() {
     2 -> Blog.KEY_KEY
     else -> Blog.KEY_OSU
   }
+
+  private fun createFragmentPagerAdapter(fragmentManager: FragmentManager): FragmentPagerAdapter =
+    object : FragmentPagerAdapter(fragmentManager) {
+      override fun getPageTitle(position: Int): CharSequence =
+        when (convertPagePositionToType(position)) {
+          Blog.KEY_OSU -> "推しメン"
+          Blog.KEY_NOG -> "乃木坂"
+          Blog.KEY_KEY -> "欅坂"
+          else -> ""
+        }
+
+      override fun getItem(position: Int): Fragment =
+        BlogPageFragment().newInstance(convertPagePositionToType(position))
+
+      override fun getCount(): Int = 3
+    }
 
 }

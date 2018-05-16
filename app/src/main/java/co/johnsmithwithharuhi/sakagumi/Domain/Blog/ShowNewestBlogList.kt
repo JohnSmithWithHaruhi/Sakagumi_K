@@ -22,10 +22,6 @@ class ShowNewestBlogList(
   private fun filterOlder(
     blogList: List<Blog>,
     newestUrl: String
-  ): List<Blog> {
-    val tempList = ArrayList<Blog>()
-    tempList += blogList.takeWhile { !TextUtils.equals(it.url, newestUrl) }
-    return tempList
-  }
+  ): List<Blog> = blogList.takeWhile { !TextUtils.equals(it.url, newestUrl) }
 
 }

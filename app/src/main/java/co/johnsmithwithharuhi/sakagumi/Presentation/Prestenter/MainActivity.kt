@@ -12,8 +12,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     val mBinding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
-    val bottomNavigationView = mBinding.mainBottomNavigation
-    bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+    mBinding.mainBottomNavigation.setOnNavigationItemSelectedListener { item ->
       when (item.itemId) {
         R.id.action_blog, R.id.action_rss, R.id.action_event -> {
         }
@@ -22,11 +21,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     supportFragmentManager.beginTransaction()
-        .add(
-            R.id.main_content,
-            BlogMainFragment()
-        )
+        .add(R.id.main_content, BlogMainFragment())
         .commit()
-
   }
 }
