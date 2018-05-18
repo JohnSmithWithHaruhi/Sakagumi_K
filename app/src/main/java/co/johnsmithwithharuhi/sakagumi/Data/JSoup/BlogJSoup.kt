@@ -78,7 +78,7 @@ class BlogJSoup {
           name = headElement.getElementsByClass("author").text(),
           title = headElement.getElementsByTag("a").first().text(),
           url = headElement.getElementsByTag("a").first().attr("href"),
-          content = bodyElements[i].text().replace(" ", ""),
+          content = bodyElements[i].text().replace(Regex("\\s+"), ""),
           time = bottomElements[i].text().split("｜")[0]
       )
       blogList.add(blog)
