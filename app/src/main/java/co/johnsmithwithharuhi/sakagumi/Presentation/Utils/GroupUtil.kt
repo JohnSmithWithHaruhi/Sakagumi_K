@@ -15,8 +15,8 @@ class GroupUtil {
       Blog.KEY_NOG -> R.color.colorPurple700
       Blog.KEY_KEY -> R.color.colorLightGreen700
       else -> R.color.colorLightGreen700
-    }.run {
-      ContextCompat.getColor(context, this)
+    }.let {
+      ContextCompat.getColor(context, it)
     }
   }
 }

@@ -12,16 +12,20 @@ class BitmapUtil {
       context: Context,
       id: Int
     ): Bitmap {
-      val vectorDrawable = ContextCompat.getDrawable(context, id)
-      val bitmap = Bitmap.createBitmap(
-          vectorDrawable.intrinsicWidth,
-          vectorDrawable.intrinsicHeight,
-          Bitmap.Config.ARGB_8888
-      )
-      val canvas = Canvas(bitmap)
-      vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
-      vectorDrawable.draw(canvas)
-      return bitmap
+      return ContextCompat.getDrawable(context, id)
+          .let { drawable ->
+            Bitmap.createBitmap(
+                drawable.intrinsicWidth,
+                drawable.intrinsicHeight,
+                Bitmap.Config.ARGB_8888
+            )
+                .also {
+                  Canvas(it).let {
+                    drawable.setBounds(0, 0, it.width, it.height)
+                    drawable.draw(it)
+                  }
+                }
+          }
     }
   }
 

@@ -19,20 +19,20 @@ class BlogMainFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-
-    val mBinding = DataBindingUtil.inflate<FragmentBlogMainBinding>(
+    return DataBindingUtil.inflate<FragmentBlogMainBinding>(
         inflater!!,
         R.layout.fragment_blog_main, container, false
     )
-    val tabLayout = mBinding.blogMainTabLayout
-    val viewPager = mBinding.blogMainViewPager
-    val fragmentPagerAdapter = createFragmentPagerAdapter(fragmentManager)
-
-    viewPager.adapter = fragmentPagerAdapter
-    tabLayout.setupWithViewPager(viewPager)
-    tabLayout.setSelectedTabIndicatorHeight(3)
-
-    return mBinding.root
+        .apply {
+          blogMainTabLayout.setSelectedTabIndicatorHeight(3)
+          blogMainViewPager.apply {
+            adapter = createFragmentPagerAdapter(fragmentManager)
+          }
+              .let {
+                blogMainTabLayout.setupWithViewPager(it)
+              }
+        }
+        .root
   }
 
   private fun convertPagePositionToType(position: Int): Int = when (position) {

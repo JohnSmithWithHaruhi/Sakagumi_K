@@ -10,15 +10,16 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    val mBinding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
-
-    mBinding.mainBottomNavigation.setOnNavigationItemSelectedListener { item ->
-      when (item.itemId) {
-        R.id.action_blog, R.id.action_rss, R.id.action_event -> {
+    DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        .run {
+          mainBottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+              R.id.action_blog, R.id.action_rss, R.id.action_event -> {
+              }
+            }
+            true
+          }
         }
-      }
-      true
-    }
 
     supportFragmentManager.beginTransaction()
         .add(R.id.main_content, BlogMainFragment())
