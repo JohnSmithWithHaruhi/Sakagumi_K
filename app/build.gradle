@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-  compileSdkVersion 26
+  compileSdkVersion 27
   buildToolsVersion '27.0.3'
 
   defaultConfig {
     applicationId "co.johnsmithwithharuhi.sakagumi"
     minSdkVersion 19
-    targetSdkVersion 26
+    targetSdkVersion 27
     versionCode 1
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -33,7 +33,7 @@ android {
 }
 
 ext {
-  support_library_version = '26.1.0'
+  support_library_version = '27.1.1'
 }
 
 dependencies {
@@ -43,7 +43,7 @@ dependencies {
   implementation "com.android.support:design:$support_library_version"
   implementation "com.android.support:support-v13:$support_library_version"
   implementation "com.android.support:customtabs:$support_library_version"
-  implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+  implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
   //RxJava
   implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
@@ -53,17 +53,12 @@ dependencies {
   implementation 'org.jsoup:jsoup:1.10.3'
 
   //ViewModel and LiveDataViewModel and LiveData
-  def lifecycle_version = "1.1.0"
+  def lifecycle_version = "1.1.1"
   implementation "android.arch.lifecycle:extensions:$lifecycle_version"
   implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
 
-  //Room
-  def room_version = "1.1.0"
-  implementation "android.arch.persistence.room:runtime:$room_version"
-  annotationProcessor "android.arch.persistence.room:compiler:$room_version"
-
   //DataBinding
-  kapt "com.android.databinding:compiler:3.1.2"
+  kapt "com.android.databinding:compiler:3.1.3"
 
   androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
     exclude group: 'com.android.support', module: 'support-annotations'

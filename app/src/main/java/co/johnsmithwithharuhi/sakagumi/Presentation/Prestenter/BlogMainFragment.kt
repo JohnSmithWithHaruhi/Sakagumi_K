@@ -15,18 +15,17 @@ import co.johnsmithwithharuhi.sakagumi.databinding.FragmentBlogMainBinding
 class BlogMainFragment : Fragment() {
 
   override fun onCreateView(
-    inflater: LayoutInflater?,
+    inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
     return DataBindingUtil.inflate<FragmentBlogMainBinding>(
-        inflater!!,
-        R.layout.fragment_blog_main, container, false
+        inflater, R.layout.fragment_blog_main, container, false
     )
         .apply {
           blogMainTabLayout.setSelectedTabIndicatorHeight(3)
           blogMainViewPager.apply {
-            adapter = createFragmentPagerAdapter(fragmentManager)
+            adapter = createFragmentPagerAdapter(fragmentManager!!)
           }
               .let {
                 blogMainTabLayout.setupWithViewPager(it)

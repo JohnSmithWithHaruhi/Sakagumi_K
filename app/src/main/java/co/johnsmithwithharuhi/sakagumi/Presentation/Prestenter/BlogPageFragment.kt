@@ -43,21 +43,20 @@ class BlogPageFragment : Fragment(),
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    blogListAdapter = BlogListAdapter(context, this)
+    blogListAdapter = BlogListAdapter(context!!, this)
     viewModel = ViewModelProviders.of(this)
         .get(BlogPageViewModel::class.java)
   }
 
   override fun onCreateView(
-    inflater: LayoutInflater?,
+    inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
     val binding = DataBindingUtil.inflate<FragmentBlogPageBinding>(
-        inflater!!,
-        R.layout.fragment_blog_page, container, false
+        inflater, R.layout.fragment_blog_page, container, false
     )
-    type = arguments.getInt(BLOG_TYPE)
+    type = arguments!!.getInt(BLOG_TYPE)
 
     initSwipeRefreshLayout(binding)
     initRecyclerView(binding)
@@ -112,7 +111,7 @@ class BlogPageFragment : Fragment(),
   }
 
   override fun onItemClick(url: String) {
-    CustomTabUtil.launchUrl(context, type, url)
+    CustomTabUtil.launchUrl(context!!, type, url)
   }
 
   override fun onRefresh() {

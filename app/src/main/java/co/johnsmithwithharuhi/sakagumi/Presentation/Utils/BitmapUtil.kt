@@ -12,7 +12,7 @@ class BitmapUtil {
       context: Context,
       id: Int
     ): Bitmap {
-      return ContextCompat.getDrawable(context, id)
+      return ContextCompat.getDrawable(context, id)!!
           .let { drawable ->
             Bitmap.createBitmap(
                 drawable.intrinsicWidth,
