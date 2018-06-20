@@ -1,4 +1,4 @@
-package co.johnsmithwithharuhi.sakagumi.Presentation.Prestenter
+package co.johnsmithwithharuhi.sakagumi.Presentation.View
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -10,19 +10,19 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
-        .run {
-          mainBottomNavigation.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-              R.id.action_blog, R.id.action_rss, R.id.action_event -> {
-              }
-            }
-            true
-          }
-        }
+    val binging = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+
+
+    binging.mainBottomNavigation.setOnNavigationItemSelectedListener { item ->
+      when (item.itemId) {
+        R.id.action_blog, R.id.action_rss, R.id.action_event -> true
+        else -> false
+      }
+    }
 
     supportFragmentManager.beginTransaction()
         .add(R.id.main_content, BlogMainFragment())
         .commit()
   }
+
 }

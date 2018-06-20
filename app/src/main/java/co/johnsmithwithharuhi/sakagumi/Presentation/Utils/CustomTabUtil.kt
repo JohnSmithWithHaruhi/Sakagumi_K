@@ -3,6 +3,7 @@ package co.johnsmithwithharuhi.sakagumi.Presentation.Utils
 import android.content.Context
 import android.net.Uri
 import android.support.customtabs.CustomTabsIntent
+import co.johnsmithwithharuhi.sakagumi.Domain.GroupType
 import co.johnsmithwithharuhi.sakagumi.R
 
 class CustomTabUtil {
@@ -10,12 +11,12 @@ class CustomTabUtil {
   companion object {
     fun launchUrl(
       context: Context,
-      type: Int,
+      group: GroupType,
       url: String
     ) {
       CustomTabsIntent.Builder()
           .setShowTitle(true)
-          .setToolbarColor(GroupUtil.getGroupColor(context, type))
+          .setToolbarColor(GroupUtil.getGroupColor(context, group))
           .enableUrlBarHiding()
           .addDefaultShareMenuItem()
           .setCloseButtonIcon(

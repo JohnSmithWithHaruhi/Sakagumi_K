@@ -1,5 +1,6 @@
-package co.johnsmithwithharuhi.sakagumi.Presentation.Prestenter
+package co.johnsmithwithharuhi.sakagumi.Presentation.View
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -10,18 +11,13 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import co.johnsmithwithharuhi.sakagumi.Data.Repository.BlogRepository
-import co.johnsmithwithharuhi.sakagumi.Domain.Blog.Blog
-import co.johnsmithwithharuhi.sakagumi.Domain.Blog.ShowBlogList
-import co.johnsmithwithharuhi.sakagumi.Domain.Blog.ShowNewestBlogList
+import co.johnsmithwithharuhi.sakagumi.Data.Model.BlogModel
+import co.johnsmithwithharuhi.sakagumi.Domain.GroupType
 import co.johnsmithwithharuhi.sakagumi.Presentation.Adapter.BlogListAdapter
 import co.johnsmithwithharuhi.sakagumi.Presentation.Utils.CustomTabUtil
+import co.johnsmithwithharuhi.sakagumi.Presentation.ViewModel.BlogPageViewModel
 import co.johnsmithwithharuhi.sakagumi.R
-import co.johnsmithwithharuhi.sakagumi.ViewModel.BlogPageViewModel
 import co.johnsmithwithharuhi.sakagumi.databinding.FragmentBlogPageBinding
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 private const val BLOG_TYPE = "blog_type"
 
@@ -29,16 +25,18 @@ class BlogPageFragment : Fragment(),
     BlogListAdapter.OnItemClickedListener,
     SwipeRefreshLayout.OnRefreshListener {
 
-  private val disposable = CompositeDisposable()
-  private val blogRepository = BlogRepository()
-  private var type: Int = Blog.KEY_OSU
+  private var viewType: GroupType = GroupType.OSU
 
   private lateinit var blogListAdapter: BlogListAdapter
   private lateinit var swipeRefreshLayout: SwipeRefreshLayout
   private lateinit var viewModel: BlogPageViewModel
 
-  fun newInstance(type: Int): BlogPageFragment = BlogPageFragment().apply {
-    arguments = Bundle().apply { putInt(BLOG_TYPE, type) }
+  fun newInstance(type: GroupType): BlogPageFragment {
+    return BlogPageFragment().apply {
+      arguments = Bundle().apply {
+        putSerializable(BLOG_TYPE, type)
+      }
+    }
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +44,7 @@ class BlogPageFragment : Fragment(),
     blogListAdapter = BlogListAdapter(context!!, this)
     viewModel = ViewModelProviders.of(this)
         .get(BlogPageViewModel::class.java)
+    viewType = arguments!!.getSerializable(BLOG_TYPE) as GroupType
   }
 
   override fun onCreateView(
@@ -56,12 +55,9 @@ class BlogPageFragment : Fragment(),
     val binding = DataBindingUtil.inflate<FragmentBlogPageBinding>(
         inflater, R.layout.fragment_blog_page, container, false
     )
-    type = arguments!!.getInt(BLOG_TYPE)
 
     initSwipeRefreshLayout(binding)
     initRecyclerView(binding)
-
-    swipeRefreshLayout.isRefreshing = true
     initBlogList()
 
     return binding.root
@@ -87,41 +83,23 @@ class BlogPageFragment : Fragment(),
   }
 
   private fun initBlogList() {
-    disposable.add(
-        ShowBlogList(blogRepository, type).execute()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-              blogListAdapter.initViewModelList(it)
-              swipeRefreshLayout.isRefreshing = false
-            }, { swipeRefreshLayout.isRefreshing = false })
-    )
+    swipeRefreshLayout.isRefreshing = true
+    viewModel.getBlogList(viewType)
+
+    viewModel.blogList.observe(this, Observer<List<BlogModel>> {
+      it?.let { blogListAdapter.initViewModelList(it) }
+          .also { swipeRefreshLayout.isRefreshing = false }
+    })
   }
 
-  private fun loadNewBlogList() {
-    disposable.add(
-        ShowNewestBlogList(blogRepository, type, blogListAdapter.getNewestUrl()).execute()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-              blogListAdapter.putViewModelList(it)
-              swipeRefreshLayout.isRefreshing = false
-            }, { swipeRefreshLayout.isRefreshing = false })
-    )
-  }
-
-  override fun onItemClick(url: String) {
-    CustomTabUtil.launchUrl(context!!, type, url)
+  override fun onItemClick(
+    groupType: GroupType,
+    url: String
+  ) {
+    CustomTabUtil.launchUrl(context!!, groupType, url)
   }
 
   override fun onRefresh() {
-    disposable.clear()
     swipeRefreshLayout.isRefreshing = true
-    if (blogListAdapter.itemCount == 0) {
-      initBlogList()
-    } else {
-      loadNewBlogList()
-    }
   }
-
 }

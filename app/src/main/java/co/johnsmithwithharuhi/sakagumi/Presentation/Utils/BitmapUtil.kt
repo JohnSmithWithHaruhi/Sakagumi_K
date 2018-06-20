@@ -10,9 +10,9 @@ class BitmapUtil {
   companion object {
     fun convertBitmapFromVectorDrawable(
       context: Context,
-      id: Int
+      resId: Int
     ): Bitmap {
-      return ContextCompat.getDrawable(context, id)!!
+      return ContextCompat.getDrawable(context, resId)!!
           .let { drawable ->
             Bitmap.createBitmap(
                 drawable.intrinsicWidth,
