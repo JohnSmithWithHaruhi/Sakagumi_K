@@ -8,15 +8,24 @@ import android.support.v4.content.ContextCompat
 class BitmapUtil {
 
   companion object {
-    fun convertBitmapFromVectorDrawable(context: Context, id: Int): Bitmap {
-      val vectorDrawable = ContextCompat.getDrawable(context, id)
-      val bitmap = Bitmap.createBitmap(vectorDrawable.intrinsicWidth,
-          vectorDrawable.intrinsicHeight,
-          Bitmap.Config.ARGB_8888)
-      val canvas = Canvas(bitmap)
-      vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
-      vectorDrawable.draw(canvas)
-      return bitmap
+    fun convertBitmapFromVectorDrawable(
+      context: Context,
+      resId: Int
+    ): Bitmap {
+      return ContextCompat.getDrawable(context, resId)!!
+          .let { drawable ->
+            Bitmap.createBitmap(
+                drawable.intrinsicWidth,
+                drawable.intrinsicHeight,
+                Bitmap.Config.ARGB_8888
+            )
+                .also {
+                  Canvas(it).let {
+                    drawable.setBounds(0, 0, it.width, it.height)
+                    drawable.draw(it)
+                  }
+                }
+          }
     }
   }
 
